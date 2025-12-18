@@ -1,0 +1,4 @@
+recursive-include shadow4_mosaics *.pyx
+recursive-include shadow4_mosaics *.py
+
+include README.md

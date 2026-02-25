@@ -1,0 +1,30 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Egg / build artifacts
+*.egg-info/
+dist/
+build/
+
+# Compiled extensions
+*.so
+
+# Virtual environments
+.env/
+.venv/
+env/
+
+# macOS / Linux junk
+.DS_Store
+.directory
+
+# Jupyter
+.ipynb_checkpoints/
+
+# pytest cache
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/

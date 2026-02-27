@@ -44,6 +44,18 @@ class MosaicCrystal:
     def d_spacing_A(self):
         return self._setup.dSpacing()
     
+    def F0(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        return self._setup.F0(energy)
+
+    def FH(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        return self._setup.FH(energy)
+
+    def FH_bar(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        return self._setup.FH_bar(energy)
+    
     @property
     def unitCellVolume_A3(self):
         return self._setup.unitcellVolume()

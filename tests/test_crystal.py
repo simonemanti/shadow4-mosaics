@@ -1,43 +1,75 @@
 import numpy as np
 import os
 import glob
+import pytest
 
 from shadow4_mosaics.crystal import MosaicCrystal
 
 
-def test_bragg_law_and_cleanup():
+@pytest.fixture
+def crystal():
+    return MosaicCrystal()
 
-    energy = 8000.0  # eV
-    hc = 12398.4193  # eV·Å
 
-    crystal = MosaicCrystal()
+def test_bragg_law(crystal):
+
+    energy = 8000.0
+    hc = 12398.4193
 
     d = crystal.d_spacing_A
     theta = crystal.bragg_angle(energy)
-
     wavelength = hc / energy
 
-    # --- physics consistency ---
     assert np.isclose(2 * d * np.sin(theta), wavelength, rtol=1e-6)
 
-    # --- vectorization check ---
+
+def test_bragg_vectorization(crystal):
+
     energies = np.linspace(7900, 8100, 5)
     thetas = crystal.bragg_angle(energies)
+
     assert thetas.shape == energies.shape
+    assert np.all(np.isfinite(thetas))
 
-    # --- volume reconstruction from d002 ---
+
+def test_volume_reconstruction(crystal):
+
+    d = crystal.d_spacing_A
     c = 2.0 * d
-    a = 2.46                        
-    V_reconstructed = np.sqrt(3)/2 * a**2 * c
+    a = 2.46
 
+    V_reconstructed = np.sqrt(3)/2 * a**2 * c
     V_dabax = crystal.unitCellVolume_A3
 
     assert np.isclose(V_dabax, V_reconstructed, rtol=0.02)
 
-    asymmetry_factor = crystal.asymmetry_factor(energy)
-    assert np.isclose(asymmetry_factor, -1.0, rtol=1e-6)
 
-    # --- cleanup dabax files ---
+def test_asymmetry_factor(crystal):
+
+    energy = 8000.0
+    asym = crystal.asymmetry_factor(energy)
+
+    assert np.isclose(asym, -1.0, rtol=1e-6)
+
+def test_structure_factors(crystal):
+
+    energies = np.linspace(7900, 8100, 5)
+
+    F0 = crystal.F0(energies)
+    FH = crystal.FH(energies)
+    FHb = crystal.FH_bar(energies)
+
+    assert F0.shape == energies.shape
+    assert FH.shape == energies.shape
+    assert FHb.shape == energies.shape
+
+    assert np.all(np.isfinite(F0))
+    assert np.all(np.isfinite(FH))
+    assert np.all(np.isfinite(FHb))
+
+
+def teardown_module(module):
+
     for f in glob.glob("*.dat"):
         try:
             os.remove(f)

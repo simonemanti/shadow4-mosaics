@@ -51,6 +51,22 @@ def test_asymmetry_factor(crystal):
 
     assert np.isclose(asym, -1.0, rtol=1e-6)
 
+def test_psi_factors(crystal):
+
+    energies = np.linspace(7900, 8100, 5)
+
+    psi0 = crystal.psi0(energies)
+    psiH = crystal.psiH(energies)
+    psiHb = crystal.psiH_bar(energies)
+
+    assert psi0.shape == energies.shape
+    assert psiH.shape == energies.shape
+    assert psiHb.shape == energies.shape
+
+    assert np.all(np.isfinite(psi0))
+    assert np.all(np.isfinite(psiH))
+    assert np.all(np.isfinite(psiHb))
+
 def test_structure_factors(crystal):
 
     energies = np.linspace(7900, 8100, 5)

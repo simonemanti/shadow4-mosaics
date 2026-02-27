@@ -55,7 +55,21 @@ class MosaicCrystal:
     def FH_bar(self, energy_eV):
         energy = np.asarray(energy_eV, dtype=float)
         return self._setup.FH_bar(energy)
-    
+
+    def psi0(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        return self._setup.psi0(energy)
+
+
+    def psiH(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        return self._setup.psiH(energy)
+
+
+    def psiH_bar(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        return self._setup.psiH_bar(energy)    
+
     @property
     def unitCellVolume_A3(self):
         return self._setup.unitcellVolume()

@@ -32,11 +32,15 @@ class MosaicCrystal:
             dabax=None,   # let crystalpy manage dabax
         )
 
-    @property
-    def d_spacing_A(self):
-        return self._setup.dSpacing()
-
     def bragg_angle(self, energy_eV):
         return self._setup.angleBragg(
             np.asarray(energy_eV, dtype=float)
         )
+    
+    @property
+    def d_spacing_A(self):
+        return self._setup.dSpacing()
+    
+    @property
+    def unitCellVolume_A3(self):
+        return self._setup.unitcellVolume()

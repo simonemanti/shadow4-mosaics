@@ -25,6 +25,15 @@ def test_bragg_law_and_cleanup():
     thetas = crystal.bragg_angle(energies)
     assert thetas.shape == energies.shape
 
+    # --- volume reconstruction from d002 ---
+    c = 2.0 * d
+    a = 2.46                        
+    V_reconstructed = np.sqrt(3)/2 * a**2 * c
+
+    V_dabax = crystal.unitCellVolume_A3
+
+    assert np.isclose(V_dabax, V_reconstructed, rtol=0.02)
+
     # --- cleanup dabax files ---
     for f in glob.glob("*.dat"):
         try:

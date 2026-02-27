@@ -1,8 +1,11 @@
-from dataclasses import dataclass, field
-import numpy as np
-
 from crystalpy.diffraction.GeometryType import BraggDiffraction
 from crystalpy.diffraction.DiffractionSetupDabax import DiffractionSetupDabax
+
+from dataclasses import dataclass, field
+
+import numpy as np
+
+import scipy.constants as codata
 
 
 @dataclass
@@ -55,20 +58,37 @@ class MosaicCrystal:
     def FH_bar(self, energy_eV):
         energy = np.asarray(energy_eV, dtype=float)
         return self._setup.FH_bar(energy)
+    
+    def mu_cm_inv(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        lam_cm = self.wavelength_cm(energy)
+        psi0 = self.psi0(energy)
+        return -2 * np.pi / lam_cm * psi0.imag
 
     def psi0(self, energy_eV):
         energy = np.asarray(energy_eV, dtype=float)
         return self._setup.psi0(energy)
 
-
     def psiH(self, energy_eV):
         energy = np.asarray(energy_eV, dtype=float)
         return self._setup.psiH(energy)
 
-
     def psiH_bar(self, energy_eV):
         energy = np.asarray(energy_eV, dtype=float)
         return self._setup.psiH_bar(energy)    
+
+    def Q_cm_inv(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        lam_cm = self.wavelength_cm(energy)
+        psiH = self.psiH(energy)
+        psiHb = self.psiH_bar(energy)
+        theta = self.bragg_angle(energy)
+
+        return (
+            np.pi**2
+            * np.abs(psiH * psiHb)
+            / (lam_cm * np.sin(2 * theta))
+        )
 
     @property
     def unitCellVolume_A3(self):
@@ -95,3 +115,8 @@ class MosaicCrystal:
     def vectorKhdirection(self, energy_eV):
         energy = np.asarray(energy_eV, dtype=float)
         return self._setup.vectorKhdirection(energy)
+    
+    def wavelength_cm(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        lam_m = codata.h * codata.c / codata.e / energy
+        return lam_m * 100.0

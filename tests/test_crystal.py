@@ -51,6 +51,16 @@ def test_asymmetry_factor(crystal):
 
     assert np.isclose(asym, -1.0, rtol=1e-6)
 
+def test_mu_Q_cm_units(crystal):
+
+    energy = 8000.0
+
+    mu = crystal.mu_cm_inv(energy)
+    Q = crystal.Q_cm_inv(energy)
+
+    assert np.isfinite(mu)
+    assert np.isfinite(Q)
+
 def test_psi_factors(crystal):
 
     energies = np.linspace(7900, 8100, 5)

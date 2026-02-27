@@ -51,6 +51,15 @@ def test_asymmetry_factor(crystal):
 
     assert np.isclose(asym, -1.0, rtol=1e-6)
 
+def test_deviation(crystal):
+
+    energy = 8000.0
+
+    dev = crystal.deviation_of_incoming_photon(energy)
+
+    assert np.isfinite(dev)
+    assert abs(dev) < 1e-6
+
 def test_mu_Q_cm_units(crystal):
 
     energy = 8000.0

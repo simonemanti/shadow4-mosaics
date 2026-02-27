@@ -1,5 +1,6 @@
 from crystalpy.diffraction.GeometryType import BraggDiffraction
 from crystalpy.diffraction.DiffractionSetupDabax import DiffractionSetupDabax
+from crystalpy.util.Photon import Photon
 
 from dataclasses import dataclass, field
 
@@ -46,6 +47,19 @@ class MosaicCrystal:
     @property
     def d_spacing_A(self):
         return self._setup.dSpacing()
+    
+    def deviation_of_incoming_photon(self, energy_eV, direction_vector=None):
+        energy = np.asarray(energy_eV, dtype=float)
+
+        if direction_vector is None:
+            direction_vector = self.vectorK0(energy)
+
+        photon = Photon(
+            energy_in_ev=energy,
+            direction_vector=direction_vector
+        )
+
+        return self._setup.deviationOfIncomingPhoton(photon)
     
     def F0(self, energy_eV):
         energy = np.asarray(energy_eV, dtype=float)

@@ -32,6 +32,9 @@ class MosaicCrystal:
             dabax=None,   # let crystalpy manage dabax
         )
 
+    def asymmetry_factor(self, energy_eV):
+        return self._setup.asymmetryFactor(energy_eV)
+
     def bragg_angle(self, energy_eV):
         return self._setup.angleBragg(
             np.asarray(energy_eV, dtype=float)

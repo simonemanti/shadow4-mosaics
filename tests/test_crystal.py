@@ -34,6 +34,9 @@ def test_bragg_law_and_cleanup():
 
     assert np.isclose(V_dabax, V_reconstructed, rtol=0.02)
 
+    asymmetry_factor = crystal.asymmetry_factor(energy)
+    assert np.isclose(asymmetry_factor, -1.0, rtol=1e-6)
+
     # --- cleanup dabax files ---
     for f in glob.glob("*.dat"):
         try:

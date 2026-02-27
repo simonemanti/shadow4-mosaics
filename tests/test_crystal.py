@@ -83,6 +83,35 @@ def test_structure_factors(crystal):
     assert np.all(np.isfinite(FH))
     assert np.all(np.isfinite(FHb))
 
+def test_wavevector_geometry(crystal):
+
+    energy = 8000.0
+
+    V0 = crystal.vectorK0direction(energy).components()
+    Bh_dir = crystal.vectorHdirection().components()
+    Bh = crystal.vectorH().components()
+    K0 = crystal.vectorK0(energy).components()
+    Kh = crystal.vectorKh(energy).components()
+    Vh = crystal.vectorKhdirection(energy).components()
+
+    V0 = np.array(V0)
+    Bh_dir = np.array(Bh_dir)
+    Bh = np.array(Bh)
+    K0 = np.array(K0)
+    Kh = np.array(Kh)
+    Vh = np.array(Vh)
+
+    assert V0.shape == (3,)
+    assert Bh_dir.shape == (3,)
+    assert Bh.shape == (3,)
+    assert K0.shape == (3,)
+    assert Kh.shape == (3,)
+    assert Vh.shape == (3,)
+
+    assert np.all(np.isfinite(V0))
+    assert np.all(np.isfinite(Bh))
+    assert np.all(np.isfinite(K0))
+    assert np.all(np.isfinite(Kh))
 
 def teardown_module(module):
 

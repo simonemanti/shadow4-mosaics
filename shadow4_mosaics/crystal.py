@@ -73,3 +73,25 @@ class MosaicCrystal:
     @property
     def unitCellVolume_A3(self):
         return self._setup.unitcellVolume()
+    
+    def vectorK0direction(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        return self._setup.vectorK0direction(energy)
+
+    def vectorHdirection(self):
+        return self._setup.vectorHdirection()
+
+    def vectorH(self):
+        return self._setup.vectorH()
+
+    def vectorK0(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        return self._setup.vectorK0(energy)
+
+    def vectorKh(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        return self._setup.vectorKh(energy)
+
+    def vectorKhdirection(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        return self._setup.vectorKhdirection(energy)

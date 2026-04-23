@@ -65,10 +65,18 @@ def test_mu_Q_cm_units(crystal):
     energy = 8000.0
 
     mu = crystal.mu_cm_inv(energy)
+    Qs = crystal.Q_s_cm_inv(energy)
+    Qp = crystal.Q_p_cm_inv(energy)
     Q = crystal.Q_cm_inv(energy)
+    theta = crystal.bragg_angle(energy)
 
     assert np.isfinite(mu)
+    assert np.isfinite(Qs)
+    assert np.isfinite(Qp)
     assert np.isfinite(Q)
+    assert np.isclose(Q, Qs)
+    assert np.isclose(Qp, Qs * np.cos(2 * theta) ** 2)
+    assert Qp <= Qs
 
 def test_psi_factors(crystal):
 

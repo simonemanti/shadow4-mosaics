@@ -91,7 +91,7 @@ class MosaicCrystal:
         energy = np.asarray(energy_eV, dtype=float)
         return self._setup.psiH_bar(energy)    
 
-    def Q_cm_inv(self, energy_eV):
+    def Q_s_cm_inv(self, energy_eV):
         energy = np.asarray(energy_eV, dtype=float)
         lam_cm = self.wavelength_cm(energy)
         psiH = self.psiH(energy)
@@ -103,6 +103,14 @@ class MosaicCrystal:
             * np.abs(psiH * psiHb)
             / (lam_cm * np.sin(2 * theta))
         )
+
+    def Q_p_cm_inv(self, energy_eV):
+        energy = np.asarray(energy_eV, dtype=float)
+        theta = self.bragg_angle(energy)
+        return self.Q_s_cm_inv(energy) * np.cos(2 * theta) ** 2
+
+    def Q_cm_inv(self, energy_eV):
+        return self.Q_s_cm_inv(energy_eV)
 
     @property
     def unitCellVolume_A3(self):
